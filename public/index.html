@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Pokémon List</title>
+        <script src="https://unpkg.com/htmx.org@2.0.3"
+                integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
+                crossorigin="anonymous"></script>
+        <style>
+                /* Basic Reset */
+                * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                }
+
+                .signature {
+                        position: absolute;
+                        top: 10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        font-size: 18px;
+                        color: #333;
+                        font-weight: bold;
+                        background-color: #f4f4f9;
+                        padding: 5px 10px;
+                        border-radius: 8px;
+                }
+
+                /* Body and Background */
+                body {
+                        font-family: Arial, sans-serif;
+                        background: radial-gradient(circle at center, #f4f4f9, #e0eafc);
+                        color: #333;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        padding: 20px;
+                }
+
+                /* Container Styling */
+                .container {
+                        width: 90%;
+                        max-width: 800px;
+                        background-color: #ffcc01;
+                        padding: 20px;
+                        border-radius: 12px;
+                        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                        border: 5px solid #333;
+                }
+
+                /* Header */
+                h1 {
+                        text-align: center;
+                        font-size: 32px;
+                        color: #ff4141;
+                        text-shadow: 1px 1px #333;
+                        margin-bottom: 20px;
+                }
+
+                /* Form Styling */
+                form {
+                        display: flex;
+                        flex-direction: column;
+                        margin-bottom: 20px;
+                        background-color: #fdf2b8;
+                        padding: 15px;
+                        border-radius: 8px;
+                        border: 2px solid #ffcc01;
+                }
+
+                form label {
+                        font-size: 18px;
+                        color: #333;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                }
+
+                form input {
+                        padding: 10px;
+                        font-size: 16px;
+                        margin-bottom: 12px;
+                        border-radius: 4px;
+                        border: 2px solid #ffcc01;
+                        background-color: #fff;
+                }
+
+                form button {
+                        padding: 12px;
+                        font-size: 16px;
+                        background-color: #ff4141;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                }
+
+                form button:hover {
+                        background-color: #e63939;
+                }
+
+                /* Table Styling */
+                table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border: 3px solid #ffcc01;
+                }
+
+                th,
+                td {
+                        padding: 12px;
+                        text-align: left;
+                        font-size: 16px;
+                        border: 2px solid #ffcc01;
+                }
+
+                th {
+                        background-color: #ff4141;
+                        color: white;
+                        font-size: 18px;
+                }
+
+                td {
+                        background-color: #fff;
+                }
+
+                /* Table Row Hover Effect */
+                tbody tr:hover {
+                        background-color: #ffe599;
+                }
+        </style>
+</head>
+
+<body>
+        <div class="signature">
+                Radoslaw Nowak, MZ104L
+        </div>
+        <div class="container">
+                <h1>Pokémon List</h1>
+                <!-- Form to Add a New Pokémon -->
+                <form hx-swap="beforebegin" hx-target="#pokemon-table-body" hx-post="/add">
+                        <label for="add-pokemon-name">Add Pokémon:</label>
+                        <input type="text" name="new-pokemon-name" id="add-pokemon-name"
+                                placeholder="Enter Pokémon name" required>
+                        <input type="text" name="new-pokemon-number" id="add-pokemon-number"
+                                placeholder="Enter Pokémon number" required>
+                        <input type="text" name="new-pokemon-type" id="add-pokemon-type"
+                                placeholder="Enter Pokémon type" required>
+                        <input type="text" name="new-pokemon-level" id="add-pokemon-level"
+                                placeholder="Enter Pokémon level" required>
+                        <input type="text" name="new-pokemon-weight" id="add-pokemon-weight"
+                                placeholder="Enter Pokémon weight" required>
+                        <button type="submit">Add</button>
+                </form>
+                <!-- Table to Display Pokémon -->
+                <table>
+                        <thead>
+                                <tr>
+                                        <th>Pokédex number</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Level</th>
+                                        <th>Weight</th>
+                                </tr>
+                        </thead>
+                        <tbody id="pokemon-table-body">
+                                {{ range .Pokemon }}
+                                {{ block "pokemon-list-element" .}}
+                                <tr>
+                                        <td>{{.PokedexNumber}}</td>
+                                        <td>{{.Name}}</td>
+                                        <td>{{.Type}}</td>
+                                        <td>{{.Level}}</td>
+                                        <td>{{.Weight}}</td>
+                                </tr>
+                                {{ end }}
+                                {{ end }}
+                        </tbody>
+                </table>
+        </div>
+</body>
+
+</html>
