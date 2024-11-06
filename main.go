@@ -64,6 +64,6 @@ func main() {
 		templ.ExecuteTemplate(w, "pokemon-list-element", pokemon)
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":3000", nil))
 
 }
